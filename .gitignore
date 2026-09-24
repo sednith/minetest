@@ -6,5 +6,5 @@ world/
 .paper/console_history/
 logs/
 ops.json
-plugins/spark
+plugins/spark/
 userchache.json
