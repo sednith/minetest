@@ -8,3 +8,6 @@ logs/
 ops.json
 plugins/spark/
 userchache.json
+crash-reports/
+cache/
+.cache/
