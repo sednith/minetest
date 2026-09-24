@@ -7,7 +7,7 @@ world/
 logs/
 ops.json
 plugins/spark/
-userchache.json
+usercache.json
 crash-reports/
 cache/
 .cache/
