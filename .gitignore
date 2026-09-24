@@ -1,1 +1,13 @@
 *.jar
+world/
+!world\dimensions\minecraft\overworld\paper-world.yml
+!world\dimensions\minecraft\the_end\paper-world.yml
+!world\dimensions\minecraft\the_nether\paper-world.yml
+.paper/console_history/
+logs/
+ops.json
+plugins/spark/
+usercache.json
+crash-reports/
+cache/
+.cache/
