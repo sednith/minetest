@@ -1,0 +1,38 @@
+name: Deploy to Linux on PR Merge
+
+# Триггер: срабатывает, когда Pull Request закрывается
+on:
+  pull_request:
+    types: [closed]
+    branches:
+      - main
+
+jobs:
+  deploy:
+    # Запускаем только если PR был именно СЛИТ (merged), а просто закрыт (closed)
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.REMOTE_HOST }}
+          username: ${{ secrets.REMOTE_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.REMOTE_PORT }}
+          script: |
+            # Переходим в папку с проектом на сервере
+            cd /home/server/minetest
+            
+            # Убеждаемся, что мы в ветке main (на всякий случай)
+            git checkout main
+            
+            # Забираем свежие изменения
+            git pull origin main
+            
+            # --- ОПЦИОНАЛЬНО ---
+            # Если вам нужно перезапустить сервис после pull, добавьте команды ниже:
+            # pm2 restart all
+            # или
+            # sudo systemctl restart your-service-name
