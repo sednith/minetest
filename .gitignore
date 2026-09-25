@@ -1,8 +1,4 @@
 *.jar
-world/
-!world/dimensions/minecraft/overworld/paper-world.yml
-!world/dimensions/minecraft/the_end/paper-world.yml
-!world/dimensions/minecraft/the_nether/paper-world.yml
 .paper/console_history/
 logs/
 ops.json
@@ -11,3 +7,21 @@ usercache.json
 crash-reports/
 cache/
 .cache/
+# WORLD
+world/*
+!world/dimensions/
+world/dimensions/*
+!world/dimensions/minecraft/
+world/dimensions/minecraft/*
+# Overworld
+!world/dimensions/minecraft/overworld/
+world/dimensions/minecraft/overworld/*
+!world/dimensions/minecraft/overworld/paper-world.yml
+# The End
+!world/dimensions/minecraft/the_end/
+world/dimensions/minecraft/the_end/*
+!world/dimensions/minecraft/the_end/paper-world.yml
+# Nether
+!world/dimensions/minecraft/the_nether/
+world/dimensions/minecraft/the_nether/*
+!world/dimensions/minecraft/the_nether/paper-world.yml
