@@ -1,5 +1,5 @@
 *.jar
-.paper/console_history/
+.paper/console_history
 logs/
 ops.json
 plugins/spark/
