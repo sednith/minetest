@@ -27,12 +27,10 @@ jobs:
             
             # Убеждаемся, что мы в ветке main (на всякий случай)
             git checkout main
+
+            # Сброс локальных изменений отслеживаемых файлов
+            git fetch origin main
+            git reset --hard origin/main
             
             # Забираем свежие изменения
             git pull origin main
-            
-            # --- ОПЦИОНАЛЬНО ---
-            # Если вам нужно перезапустить сервис после pull, добавьте команды ниже:
-            # pm2 restart all
-            # или
-            # sudo systemctl restart your-service-name
