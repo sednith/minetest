@@ -8,6 +8,7 @@ crash-reports/
 cache/
 .cache/
 overrides/
+checker-report/
 # WORLD
 world/*
 !world/dimensions/
