@@ -1,0 +1,82 @@
+name: Deploy Dev Environment
+
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+  deploy_dev:
+    name: "Deploy to Dev"
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy pipeline
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.REMOTE_HOST }}
+          username: ${{ secrets.REMOTE_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.REMOTE_PORT }}
+          script: |
+            cd /home/server/minetest
+            
+            echo ""
+            echo "[STAGE 1/4] Sync git & Apply Overrides"
+            echo "-----------------------------------------"
+            
+            echo "[INFO] Синхронизация с origin/dev..."
+            git fetch origin dev
+            git checkout -f -B dev origin/dev
+            git reset --hard origin/dev
+            
+            chmod +x apply-overrides.sh restart.sh checker.sh
+            
+            echo "[INFO] Применение overrides..."
+            ./apply-overrides.sh
+            
+            echo "[INFO] Фиксация Состояния B..."
+            git add .
+            git commit -m "ci: temporary state B for checker" || true
+            
+            echo "[OK] Stage 1 завершена"
+            
+            echo ""
+            echo "[STAGE 2/4] Restart Server"
+            echo "-----------------------------------------"
+            
+            echo "[INFO] Перезапуск сервера с проверкой готовности..."
+            ./restart.sh
+            
+            echo "[OK] Stage 2 завершена"
+            
+            echo ""
+            echo "[STAGE 3/4] Check Changes"
+            echo "-----------------------------------------"
+            
+            echo "[INFO] Запуск Checker'а..."
+            ./checker.sh
+            
+            echo "[OK] Stage 3 завершена"
+            
+            echo ""
+            echo "[STAGE 4/4] Cleanup"
+            echo "-----------------------------------------"
+            
+            echo "[INFO] Очистка временного коммита..."
+            
+            LAST_COMMIT_MSG=$(git log -1 --pretty=%B | tr -d '\n')
+            
+            if [[ "$LAST_COMMIT_MSG" == *"ci: temporary state B for checker"* ]]; then
+              echo "[INFO] Временный коммит найден. Выполняю откат..."
+              git reset --soft HEAD~1
+              git reset HEAD
+              echo "[INFO] Откат завершён."
+            else
+              echo "[INFO] Временный коммит не создавался (не было изменений). Пропускаю откат, состояние чистое."
+            fi
+            
+            echo ""
+            echo "========================================="
+            echo "[OK] DEPLOY COMPLETED SUCCESSFULLY"
+            echo "========================================="
