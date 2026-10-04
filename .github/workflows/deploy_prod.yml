@@ -1,4 +1,4 @@
-name: Deploy to Linux on PR Merge
+name: Deploy to prod
 
 # Триггер: срабатывает, когда Pull Request закрывается
 on:
