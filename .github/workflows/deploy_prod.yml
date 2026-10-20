@@ -12,6 +12,8 @@ jobs:
     # Запускаем только если PR был именно СЛИТ (merged), а просто закрыт (closed)
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
+    env:
+      PROD_SERVER_DIR: /home/server/minetest
 
     steps:
       - name: Deploy via SSH
@@ -23,7 +25,7 @@ jobs:
           port: ${{ secrets.REMOTE_PORT }}
           script: |
             # Переходим в папку с проектом на сервере
-            cd /home/server/minetest
+            cd "$PROD_SERVER_DIR"
             
             git fetch origin main
             git checkout -f -B main origin/main

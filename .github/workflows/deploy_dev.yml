@@ -9,6 +9,8 @@ jobs:
   deploy_dev:
     name: "Deploy to Dev"
     runs-on: ubuntu-latest
+    env:
+      DEV_SERVER_DIR: /home/server/minetest
 
     steps:
       - name: Deploy pipeline
@@ -19,7 +21,7 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.REMOTE_PORT }}
           script: |
-            cd /home/server/minetest
+            cd "DEV_SERVER_DIR"
             
             echo ""
             echo "[STAGE 1/4] Sync git & Apply Overrides"
