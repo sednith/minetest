@@ -25,12 +25,6 @@ jobs:
             # Переходим в папку с проектом на сервере
             cd /home/server/minetest
             
-            # Убеждаемся, что мы в ветке main (на всякий случай)
-            git checkout main
-
-            # Сброс локальных изменений отслеживаемых файлов
             git fetch origin main
+            git checkout -f -B main origin/main
             git reset --hard origin/main
-            
-            # Забираем свежие изменения
-            git pull origin main
